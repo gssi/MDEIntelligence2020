@@ -1,0 +1,22 @@
+<?nsuri cs.gssi.it/tasks_v2?>
+<?render-egx ../graphical/Tasksv2.egx?>
+
+<TasksModel author="Ludovico">
+   <Project name="RASTA" projectType="TEAMPROJ" category_name="Projects">   
+  <SimpleTask name="Deliverable" done="false"/> 
+  <SimpleTask name="Project Draft" done="true"/> 
+  <SimpleTask name="GANTT" done="true"/>             
+  </Project>                   
+   <PersonalProject name="CUIM" projectType="TEAMPROJ"  category_name="Projects">              
+  <SimpleTask name="Budget" done="true"/> 
+  <SimpleTask name="Partnership" done="false"/>           
+  </PersonalProject>   
+  <Project name="MDEIntelligence" projectType="TEAMPROJ"  category_name="Papers" >  
+  <SimpleTask name="Set up the repository"/>       
+  <CompositeTask name="paper">              
+  <SimpleTask name="Draft paper" />
+  <SimpleTask name="Running example" done="true"/>  
+  <SimpleTask name="Evaluation"/>        
+  </CompositeTask>
+  </Project> 
+</TasksModel>          

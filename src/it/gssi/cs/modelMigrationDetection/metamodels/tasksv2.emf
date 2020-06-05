@@ -1,0 +1,36 @@
+@namespace(uri="cs.gssi.it/tasks_v2", prefix="tasksv2")
+package tasksv2;
+
+class TasksModel {
+	attr String author;
+	val Project[*]#model projects;
+}
+
+abstract class Task extends NameElement {
+attr Boolean done; 
+}
+
+class Project extends NameElement {
+	ref TasksModel[1]#projects model;
+	val Task[*] tasks;
+	attr ProjectType projectType;
+	attr String category_name;
+}
+
+class Simple extends Task {
+
+}
+
+class Composite extends Task {
+	val Simple[*] subtasks;
+}
+
+abstract class NameElement {
+	attr String name;
+}
+
+enum ProjectType {
+	PERSONALPROJ = 1;
+	TEAMPROJ = 2;
+}
+

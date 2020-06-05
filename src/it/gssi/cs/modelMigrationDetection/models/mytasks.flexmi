@@ -1,0 +1,24 @@
+<?nsuri cs.gssi.it/tasks_v1?>
+<?render-egx ../graphical/Tasksv1.egx?>
+
+<TasksModel author="Ludovico">
+  <Category name="EU Projects"/>    
+   <Category name="Papers"/>               
+  <TeamProject name="RASTA" category="EU Projects">
+  <SimpleTask name="Deliverable" done="false"/> 
+  <SimpleTask name="Project Draft" done="true"/> 
+  <SimpleTask name="GANTT" done="true"/>             
+  </TeamProject>                   
+   <PersonalProject name="CUIM" category="EU Projects">              
+  <SimpleTask name="Budget" done="true"/> 
+  <SimpleTask name="Partnership" done="false"/>           
+  </PersonalProject>   
+  <TeamProject name="MDEIntelligence" category="Papers" >  
+  <SimpleTask name="Set up the repository"/>       
+  <CompositeTask name="paper">              
+  <SimpleTask name="Draft paper" />
+  <SimpleTask name="Running example" done="true"/>  
+  <SimpleTask name="Evaluation"/>        
+  </CompositeTask>
+  </TeamProject>      
+</TasksModel>      

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<taskmanager:TasksModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taskmanager="cs.gssi.it/tasks_v1" xmi:id="_TT7sAKW-EeqZwMZiYaOZ7w">
+  <projects xsi:type="taskmanager:PersonalProj" xmi:id="_XyjMYKW-EeqZwMZiYaOZ7w"/>
+  <projects xsi:type="taskmanager:TeamProj" xmi:id="_YTsxoKW-EeqZwMZiYaOZ7w" name="MDEIntelligence" category="_UC31oKW-EeqZwMZiYaOZ7w"/>
+  <categories xmi:id="_UC31oKW-EeqZwMZiYaOZ7w" category_name="papers"/>
+</taskmanager:TasksModel>
