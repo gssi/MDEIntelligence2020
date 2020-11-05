@@ -1,0 +1,60 @@
+pattern introduceSubclasses
+
+ c1: mm1!EClass ,c2: mm2!EClass
+ {
+ 
+ match:  c1.subclasses2enum(c2) and m1.getAllOfKind(c1.name).retypedSubclass2Enum(c2)
+
+ //and m1.retyped(c1,c2,m2)
+ do{
+ 	("Flatten Hierarchy found on: "+c1.name).println();
+ }
+ }
+ 
+
+ 
+ operation mm1!EClass subclasses2enum(c2: mm2!EClass ):Boolean{
+ if(self.name=c2.name and self.abstract=true and c2.abstract=false){
+ var subclasses_c1 = mm1!EClass.all.select(sc|sc.eSuperTypes.includes(self));
+ //subclasses_c1.name.println();
+ var subclasses_c2 = mm2!EClass.all.select(sc|sc.eSuperTypes.includes(c2));
+ if(subclasses_c1.size()>0){
+
+ 	//self has subclasses
+ 	if(subclasses_c2.size()==0  ){
+
+ 	//c2 removed subclasses
+ 	var literals= c2.eStructuralFeatures.select(sf|sf.eType.eClass.name=="EEnum").eType.eLiterals.flatten().name;
+ 	
+ 	for (subc in subclasses_c1) { 
+ 	
+		if(not literals.includes(subc.name.toUpperCase())){
+		//if a literal is not corresponding to the subclasses
+		return false;
+		}
+	}
+	
+ 	return true;
+ 	}
+ 	return false;
+ }
+ }
+ return false;
+ }
+ 
+ operation Sequence(Any) retypedSubclass2Enum(c2: mm2!EClass): Boolean{
+//c1.getASF().println();
+var a = c2.eAllStructuralFeatures.select(a|a.name==(c1.name.toLowerCase().concat("Type"))).first;
+
+var migrated_instances = m2.getAllOfKind(c2.name);
+var set_values_in_migrated_i = migrated_instances.collect(i|i.eGet(a).name);
+var i_subclasses_types=	self.collect(i|i.eClass().name.toUpperCase());
+if(i_subclasses_types.includesAll(set_values_in_migrated_i)) {
+return true;
+}
+ return false;
+ }
+ 
+ operation mm1!EClass getASF(): mm1!EStructuralFeature{
+ return self.eAllStructuralFeatures.first;
+ }
