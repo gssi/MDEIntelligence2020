@@ -16,7 +16,7 @@ pattern inlineClass
  c1: mm1!EClass 
  {
  
- match:  c1.inlinedClass() 
+ match:  c1.inlinedClass() and c1.retypedInlined()
 
  do{
  	("Inline metaclass with corresponding migration found on: "+c1.name).println();
@@ -30,15 +30,15 @@ if(mm2!EClass.all.select(c|c.name==self.name).size==0){
 
 var containedFeatures = self.eStructuralFeatures;
 //get all the classes referring to the deleted class
-//var classes_referring_to_self =
 
 var possible_inlined_class = mm1!EClass.all.select(c|c.eReferences.eType.name.includes(self.name));
 
 var target_inlined_class = mm2!EClass.all.select(c2|possible_inlined_class.name.includes(c2.name) and c2.eStructuralFeatures.name.includesAll(containedFeatures.collect(f|self.name.toLowerCase().concat('_').concat(f.name))));
 
 if(target_inlined_class.size>0){
-//inlined class found...now look for migration pattern
-return true;
+//inlined class found
+
+	return true;
 }
 
 }
@@ -57,7 +57,7 @@ return false;
  	if(subclasses_c2.size()==0  ){
 
  	//c2 removed subclasses
- 	var literals= c2.eStructuralFeatures.select(sf|sf.eType.eClass.name=="EEnum").eType.eLiterals.flatten().name;
+ 	var literals = c2.eStructuralFeatures.select(sf|sf.eType.eClass.name=="EEnum").eType.eLiterals.flatten().name;
  	
  	for (subc in subclasses_c1) { 
  	
@@ -84,15 +84,37 @@ var migrated_instances = m2.getAllOfKind(c2.name);
 var set_values_in_migrated_i = migrated_instances.collect(i|i.eGet(i.eClass().getEStructuralFeature(a.name)).name);
 var i_subclasses_types=	self.collect(i|i.eClass().name.toUpperCase());
 if(i_subclasses_types.includesAll(set_values_in_migrated_i)) {
-return true;
+		return true;
 }
  return false;
 }
+
+operation mm1!EClass retypedInlined(): Boolean{
+
+var containedFeatures = self.eStructuralFeatures;
+
+var possible_inlined_class = mm1!EClass.all.select(c|c.eReferences.eType.name.includes(self.name));
+
+var target_inlined_class = mm2!EClass.all.select(c2|possible_inlined_class.name.includes(c2.name) and c2.eStructuralFeatures.name.includesAll(containedFeatures.collect(f|self.name.toLowerCase().concat('_').concat(f.name))));
+
+for (c2 in target_inlined_class) { 
+	var i_to_bechecked = m1.getAllOfKind(c2.name);
+	for (i in i_to_bechecked) { 
+		//check same instances and verify that it has the slots that you find in the inlined instances
+			
+	}
+}
+
+
+return false;
+}
+
+
  
 
 //if post is executed then a migration is found. If one of the patterns failed we cannot say that a migration exists
  post{
- 
+ "=============================================================".println();
  m1.modelFile.concat(
  "\nresults to be a migration of\n").concat(
  m2.modelFile).println();
