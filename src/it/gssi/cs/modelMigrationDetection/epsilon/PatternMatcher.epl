@@ -59,3 +59,12 @@ return true;
  operation mm1!EClass getASF(): mm1!EStructuralFeature{
  return self.eAllStructuralFeatures.first;
  }
+ 
+ 
+ post{
+ 
+ m1.modelFile.concat(
+ " results to be a migration of ").concat(
+ m2.modelFile).println();
+ 
+ }
