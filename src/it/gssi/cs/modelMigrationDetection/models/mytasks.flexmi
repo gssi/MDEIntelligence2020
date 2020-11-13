@@ -2,7 +2,7 @@
 <?render-egx ../graphical/Tasksv1.egx?>
 
 <TasksModel author="Ludovico">
-  <Category name="EU Projects"/>    
+  <Category name="EU Projects" />    
    <Category name="Papers"/>               
   <TeamProject name="RASTA" category="EU Projects">
   <SimpleTask name="Deliverable" done="false"/> 

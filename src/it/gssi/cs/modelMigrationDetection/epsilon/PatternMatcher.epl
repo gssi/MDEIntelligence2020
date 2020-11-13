@@ -1,13 +1,12 @@
-pattern introduceSubclasses
+pattern subclasses2enum
 
  c1: mm1!EClass ,c2: mm2!EClass
  {
  
  match:  c1.subclasses2enum(c2) and m1.getAllOfKind(c1.name).retypedSubclass2Enum(c2)
 
- //and m1.retyped(c1,c2,m2)
  do{
- 	("Flatten Hierarchy found on: "+c1.name).println();
+ 	("subclasses to enumeration with corresponding migration found on: "+c1.name).println();
  }
  }
  
@@ -42,18 +41,20 @@ pattern introduceSubclasses
  return false;
  }
  
- operation Sequence(Any) retypedSubclass2Enum(c2: mm2!EClass): Boolean{
+operation Sequence(Any) retypedSubclass2Enum(c2: mm2!EClass): Boolean{
 //c1.getASF().println();
+ 
 var a = c2.eAllStructuralFeatures.select(a|a.name==(c1.name.toLowerCase().concat("Type"))).first;
 
 var migrated_instances = m2.getAllOfKind(c2.name);
-var set_values_in_migrated_i = migrated_instances.collect(i|i.eGet(a).name);
+
+var set_values_in_migrated_i = migrated_instances.collect(i|i.eGet(i.eClass().getEStructuralFeature(a.name)).name);
 var i_subclasses_types=	self.collect(i|i.eClass().name.toUpperCase());
 if(i_subclasses_types.includesAll(set_values_in_migrated_i)) {
 return true;
 }
  return false;
- }
+}
  
  operation mm1!EClass getASF(): mm1!EStructuralFeature{
  return self.eAllStructuralFeatures.first;
