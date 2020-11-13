@@ -11,6 +11,40 @@ pattern subclasses2enum
  }
  
 
+pattern inlineClass
+
+ c1: mm1!EClass 
+ {
+ 
+ match:  c1.inlinedClass() 
+
+ do{
+ 	("Inline metaclass with corresponding migration found on: "+c1.name).println();
+ }
+ }
+
+operation mm1!EClass inlinedClass(): Boolean{
+
+if(mm2!EClass.all.select(c|c.name==self.name).size==0){
+//metaclass deleted 
+
+var containedFeatures = self.eStructuralFeatures;
+//get all the classes referring to the deleted class
+//var classes_referring_to_self =
+
+var possible_inlined_class = mm1!EClass.all.select(c|c.eReferences.eType.name.includes(self.name));
+
+var target_inlined_class = mm2!EClass.all.select(c2|possible_inlined_class.name.includes(c2.name) and c2.eStructuralFeatures.name.includesAll(containedFeatures.collect(f|self.name.toLowerCase().concat('_').concat(f.name))));
+
+if(target_inlined_class.size>0){
+//inlined class found...now look for migration pattern
+return true;
+}
+
+}
+
+return false;
+}
  
  operation mm1!EClass subclasses2enum(c2: mm2!EClass ):Boolean{
  if(self.name=c2.name and self.abstract=true and c2.abstract=false){
@@ -42,7 +76,6 @@ pattern subclasses2enum
  }
  
 operation Sequence(Any) retypedSubclass2Enum(c2: mm2!EClass): Boolean{
-//c1.getASF().println();
  
 var a = c2.eAllStructuralFeatures.select(a|a.name==(c1.name.toLowerCase().concat("Type"))).first;
 
@@ -56,15 +89,12 @@ return true;
  return false;
 }
  
- operation mm1!EClass getASF(): mm1!EStructuralFeature{
- return self.eAllStructuralFeatures.first;
- }
- 
- 
+
+//if post is executed then a migration is found. If one of the patterns failed we cannot say that a migration exists
  post{
  
  m1.modelFile.concat(
- " results to be a migration of ").concat(
+ "\nresults to be a migration of\n").concat(
  m2.modelFile).println();
  
  }
